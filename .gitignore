@@ -1,1 +1,4 @@
 .vercel
+node_modules/
+elm-stuff/
+public/elm.js
