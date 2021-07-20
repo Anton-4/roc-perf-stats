@@ -3,4 +3,5 @@ node_modules/
 elm-stuff/
 public/elm.js
 prisma/.env
+.env
 bin/
