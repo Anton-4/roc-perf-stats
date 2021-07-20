@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"os"
 
@@ -37,7 +36,9 @@ func GetBenchmarks(w http.ResponseWriter, r *http.Request) {
 
 	result, _ := json.Marshal(benchmarks)
 
-	fmt.Fprintf(w, "%s", result)
+	w.Header().Add("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(result)
 }
 
 func NewBenchmark(w http.ResponseWriter, r *http.Request) {
@@ -47,5 +48,52 @@ func NewBenchmark(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	fmt.Fprintf(w, "<h1>Update</h1>")
+	b := db.BenchmarkModel{}
+
+	if err := json.NewDecoder(r.Body).Decode(&b); err != nil {
+		http.Error(w, "Error decoding response object", http.StatusBadRequest)
+
+		return
+	}
+
+	client := db.NewClient()
+
+	if err := client.Connect(); err != nil {
+		http.Error(w, "Server Error", http.StatusInternalServerError)
+
+		return
+	}
+
+	defer func() {
+		if err := client.Prisma.Disconnect(); err != nil {
+			panic(err)
+		}
+	}()
+
+	ctx := context.Background()
+
+	_, err := client.Benchmark.CreateOne(
+		db.Benchmark.Name.Set(b.Name),
+		db.Benchmark.LowBoundConfInterval.Set(b.LowBoundConfInterval),
+		db.Benchmark.LowBoundUnit.Set(b.LowBoundUnit),
+		db.Benchmark.PointEstimate.Set(b.PointEstimate),
+		db.Benchmark.PointEstimateUnit.Set(b.PointEstimateUnit),
+		db.Benchmark.UpBoundConfInterval.Set(b.UpBoundConfInterval),
+		db.Benchmark.UpBoundUnit.Set(b.UpBoundUnit),
+		db.Benchmark.NrOfMeasurements.Set(b.NrOfMeasurements),
+		db.Benchmark.NrOfOutliers.Set(b.NrOfOutliers),
+		db.Benchmark.StartTime.Set(b.StartTime),
+		db.Benchmark.Commit.Set(b.Commit),
+		db.Benchmark.Branch.Set(b.Branch),
+	).Exec(ctx)
+
+	if err != nil {
+		http.Error(w, "Server Error", http.StatusInternalServerError)
+
+		return
+	}
+
+	w.Header().Add("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+	json.NewEncoder(w).Encode(map[string]bool{"ok": true})
 }
