@@ -1,15 +1,37 @@
-package api
+package main
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
+	"time"
 
+	"github.com/gorilla/mux"
 	"github.com/rvcas/roc-perf-stats/prisma/db"
 )
 
-func Stats(w http.ResponseWriter, r *http.Request) {
+func main() {
+	r := mux.NewRouter()
+
+	r.HandleFunc("/update", update)
+	r.HandleFunc("/stats", stats)
+
+	srv := &http.Server{
+		Handler:      r,
+		Addr:         "localhost:4000",
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
+
+	log.Default().Print("Listening at http://localhost:4000")
+
+	log.Fatal(srv.ListenAndServe())
+
+}
+
+func stats(w http.ResponseWriter, r *http.Request) {
 	client := db.NewClient()
 
 	if err := client.Connect(); err != nil {
@@ -37,4 +59,8 @@ func Stats(w http.ResponseWriter, r *http.Request) {
 	result, _ := json.Marshal(benchmarks)
 
 	fmt.Fprintf(w, "%s", result)
+}
+
+func update(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "<h1>Update</h1>")
 }
