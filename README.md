@@ -22,7 +22,7 @@ https://roc-perf-stats-unnah.ondigitalocean.app
 The backend is built in Go and uses [prisma](https://prisma.io) to manage the DB schema and data access.
 The production database and backend both live on digitalocean. This backend unfortunately is not very
 contributor friendly but please feel free to suggest improvements to the Go code. If there are any security concerns
-please contact @rvcas privately.
+please contact [@rvcas](https://github.com/rvcas) privately.
 
 ### Endpoints
 
