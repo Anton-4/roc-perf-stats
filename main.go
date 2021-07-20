@@ -22,12 +22,12 @@ func main() {
 
 	srv := &http.Server{
 		Handler:      r,
-		Addr:         "localhost:4000",
+		Addr:         "localhost:8080",
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
 
-	log.Println("Listening at http://localhost:4000")
+	log.Println("Listening at http://localhost:8080")
 
 	log.Fatal(srv.ListenAndServe())
 }

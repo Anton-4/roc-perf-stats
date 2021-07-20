@@ -4,4 +4,4 @@ elm-stuff/
 public/elm.js
 prisma/.env
 .env
-bin/server
+bin/roc-perf-stats
