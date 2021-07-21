@@ -12,17 +12,30 @@ generator client {
 
 model Benchmark {
   id                   String   @id @default(cuid())
+  /// Name of the benchmark: nqueens, quicksort, cfold
   name                 String
+  /// Lower bound of the 95% confidence interval of the estimates of execution time. With 95% confidence the "real" execution time without noise will be between the lowBound and highBound values.
   lowBoundConfInterval Float
+  /// Time unit used in lowBoundConfInterval: ms(milliseconds), ns(nanoseconds)...
   lowBoundUnit         String
+  /// Best estimate of the "real" execution time without noise based on all measurements
   pointEstimate        Float
+  /// Time unit used: ms(milliseconds), ns(nanoseconds)...
   pointEstimateUnit    String
+  /// Upper bound of the 95% confidence interval of the estimates of execution time. With 95% confidence the "real" execution time without noise will be between the lowBound and highBound values.
   upBoundConfInterval  Float
+  /// Time unit used: ms(milliseconds), ns(nanoseconds)...
   upBoundUnit          String
+  /// Number of times this specific benchmark was executed. More measurements should make pointEstimate more accurate.
   nrOfMeasurements     Int
+  /// Number of outliers; the number of measurements that took a lot more or less time compared to most measurements.
   nrOfOutliers         Int
+  /// When the execution of the benchmark was started
   startTime            DateTime
+  /// Commit sha corresponding to the code that was benchmarked. 
   commit               String
+  /// Branch name on wich the code that was benchmarked resides.
   branch               String
+  /// When the benchmark was added to the database
   createdAt            DateTime @default(now())
 }
