@@ -13,7 +13,33 @@ The frontend is built in Elm. It is unlikely anyone other than [@rvcas](https://
 run the backend locally so the data fetching endpoint is hardcoded to production.
 The frontend is contributor friendly and pull requests are welcome.
 
-You can get started by running `elm reactor` in the root of the project after cloning this repo.
+> 🌳  built with [elm-spa](https://elm-spa.dev)
+
+### Dependencies
+
+This project requires the latest LTS version of [Node.js](https://nodejs.org/)
+
+```bash
+npm install -g elm elm-spa
+```
+
+### Running locally
+
+```bash
+elm-spa server  # starts this app at http:/localhost:1234
+```
+
+### other commands
+
+```bash
+elm-spa add    # add a new page to the application
+elm-spa build  # production build
+elm-spa watch  # runs build as you code (without the server)
+```
+
+### learn more
+
+You can learn more at [elm-spa.dev](https://elm-spa.dev)
 
 ## Backend
 

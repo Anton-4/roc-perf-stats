@@ -1,7 +1,9 @@
+.DS_Store
+.elm-spa
+elm-stuff
+node_modules
+dist
 .vercel
-node_modules/
-elm-stuff/
-public/elm.js
 prisma/.env
 .env
 bin/roc-perf-stats
